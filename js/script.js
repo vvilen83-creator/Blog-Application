@@ -1,9 +1,6 @@
 
-
 const API_URL = "http://localhost:3000/api";
 
-
-// GET USER ID FROM LOGIN TOKEN
 function getUserId(token) {
     try {
         return JSON.parse(atob(token.split(".")[1])).sub;
@@ -12,7 +9,6 @@ function getUserId(token) {
     }
 }
 
-// GET USER EMAIL FROM LOGIN TOKEN
 function getUserEmail(token) {
     try {
         return JSON.parse(atob(token.split(".")[1])).email || "Not available";
@@ -21,7 +17,7 @@ function getUserEmail(token) {
     }
 }
 
-// REGISTER FUNCTION
+// REGISTER
 const registerForm = document.getElementById("registerForm");
 
 if (registerForm) {
@@ -54,7 +50,7 @@ if (registerForm) {
     });
 }
 
-// LOGIN FUNCTION
+// LOGIN
 const loginForm = document.getElementById("loginForm");
 
 if (loginForm) {
@@ -89,7 +85,7 @@ if (loginForm) {
     });
 }
 
-// CREATE BLOG FUNCTION
+// CREATE BLOG
 const blogForm = document.getElementById("blogForm");
 
 if (blogForm) {
@@ -108,7 +104,7 @@ if (blogForm) {
         }
 
         if (!title || !content || !category) {
-            alert("Please fill all fields and select a category!");
+            alert("Please fill all fields!");
             return;
         }
 
@@ -149,16 +145,11 @@ function loadUserProfile() {
     const userEmail = document.getElementById("userEmail");
     const userId = document.getElementById("userId");
 
-    if (userEmail) {
-        userEmail.textContent = getUserEmail(token);
-    }
-
-    if (userId) {
-        userId.textContent = getUserId(token) || "Not available";
-    }
+    if (userEmail) userEmail.textContent = getUserEmail(token);
+    if (userId) userId.textContent = getUserId(token) || "Not available";
 }
 
-// LOAD MY BLOGS FUNCTION
+// LOAD DASHBOARD BLOGS
 const blogContainer = document.getElementById("blogContainer");
 
 if (blogContainer) {
@@ -206,19 +197,29 @@ async function loadMyBlogs() {
             const content = document.createElement("p");
             content.textContent = blog.content;
 
+            // EDIT BUTTON
             const editButton = document.createElement("button");
-            editButton.textContent = "Edit";
+            editButton.textContent = "✏️ Edit";
+            editButton.className = "edit-btn";
             editButton.addEventListener("click", () => editBlog(blog));
 
+            // DELETE BUTTON
             const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Delete";
+            deleteButton.textContent = "🗑️ Delete";
+            deleteButton.className = "delete-btn";
             deleteButton.addEventListener("click", () => deleteBlog(blog.id));
+
+            // BUTTON CONTAINER
+            const actions = document.createElement("div");
+            actions.className = "blog-actions";
+
+            actions.appendChild(editButton);
+            actions.appendChild(deleteButton);
 
             card.appendChild(title);
             card.appendChild(category);
             card.appendChild(content);
-            card.appendChild(editButton);
-            card.appendChild(deleteButton);
+            card.appendChild(actions);
 
             blogContainer.appendChild(card);
         });
@@ -229,13 +230,13 @@ async function loadMyBlogs() {
     }
 }
 
-// EDIT BLOG FUNCTION
+// EDIT BLOG
 async function editBlog(blog) {
     const newTitle = prompt("Enter new blog title:", blog.title);
     if (newTitle === null) return;
 
     const newCategory = prompt(
-        "Enter category (Technology, Education, Programming, Cyber Security, Lifestyle, Travel, Health, General):",
+        "Enter category:",
         blog.category || "General"
     );
     if (newCategory === null) return;
@@ -278,7 +279,7 @@ async function editBlog(blog) {
     }
 }
 
-// DELETE BLOG FUNCTION
+// DELETE BLOG
 async function deleteBlog(id) {
     if (!confirm("Are you sure you want to delete this blog?")) return;
 
@@ -306,7 +307,7 @@ async function deleteBlog(id) {
     }
 }
 
-// LOGOUT FUNCTION
+// LOGOUT
 const logoutBtn = document.getElementById("logoutBtn");
 
 if (logoutBtn) {
@@ -321,7 +322,7 @@ if (logoutBtn) {
     });
 }
 
-// PROFILE PAGE FUNCTIONALITY
+// PROFILE PAGE
 const profileForm = document.getElementById("profileForm");
 
 if (profileForm) {
@@ -335,7 +336,6 @@ if (profileForm) {
         const uploadPhotoBtn = document.getElementById("uploadPhotoBtn");
         const editName = document.getElementById("editName");
 
-        // LOAD PROFILE FROM SUPABASE
         async function loadProfile() {
             try {
                 const response = await fetch(`${API_URL}/profile`, {
@@ -361,17 +361,16 @@ if (profileForm) {
 
                 editName.value = user.name || "";
 
+                // UPDATED: Load latest profile photo without browser cache
                 if (user.photoUrl) {
-                    profileImage.src = user.photoUrl;
+                    profileImage.src = user.photoUrl + "?t=" + Date.now();
                 }
-
             } catch (error) {
                 console.log(error);
                 alert("Unable to load profile!");
             }
         }
 
-        // SAVE PROFILE NAME
         profileForm.addEventListener("submit", async function(e) {
             e.preventDefault();
 
@@ -400,13 +399,11 @@ if (profileForm) {
 
                 document.getElementById("profileName").textContent = name;
                 alert("Profile Updated Successfully!");
-
             } catch (error) {
                 alert(error.message);
             }
         });
 
-        // UPLOAD PROFILE PHOTO
         uploadPhotoBtn.addEventListener("click", async function() {
             const file = photoInput.files[0];
 
@@ -443,11 +440,11 @@ if (profileForm) {
                     throw new Error(result.error || "Photo upload failed");
                 }
 
+                // UPDATED: Show newly uploaded photo immediately
                 profileImage.src = result.photoUrl + "?t=" + Date.now();
                 photoInput.value = "";
 
                 alert("Profile Photo Uploaded Successfully!");
-
             } catch (error) {
                 alert(error.message);
             }
