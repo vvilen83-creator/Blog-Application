@@ -4,56 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Blog Application</title>
+    <title>MyBlog - Read, Write and Share</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="home-page">
 
-    <header>
-        <h2>MyBlog</h2>
+    <header class="main-header">
+        <a href="index.html" class="logo">✒ My<span>Blog</span></a>
+
         <nav>
-            <a href="index.html">Home</a>
+            <a href="index.html" class="active">Home</a>
+            <a href="#latest-blogs">Blogs</a>
             <a href="login.html">Login</a>
-            <a href="register.html">Register</a>
+            <a href="register.html" class="nav-register">Register</a>
         </nav>
     </header>
 
     <section class="hero">
-        <h1>Welcome to My Blog</h1>
-        <p>Read, Write and Share Your Stories</p>
-        <a href="login.html" class="btn">Get Started</a>
+        <div class="hero-content">
+            <span class="hero-tag">WELCOME TO MYBLOG</span>
+            <h1>Welcome to<br><span>My Blog</span> 🚀</h1>
+            <h2>Read. Write. Share.</h2>
+            <p>Discover amazing stories, explore new ideas and share your knowledge with the world.</p>
+            <a href="login.html" class="btn hero-btn">Get Started →</a>
+        </div>
+
+        <div class="hero-art">
+            <img src="assets/hero-cartoon.png" alt="Cartoon coder illustration">
+        </div>
+
+        <div class="floating-star star-one">✦</div>
+        <div class="floating-star star-two">✧</div>
+        <div class="floating-star star-three">✦</div>
     </section>
 
-    <section class="blogs">
-        <h2>Latest Blogs</h2>
+    <section class="blogs" id="latest-blogs">
 
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Search blogs by title or content..."
-            style="width: 100%; padding: 12px; margin: 15px 0; box-sizing: border-box;"
-        >
+        <div class="blog-section-heading">
+            <div>
+                <h2>Latest Blogs</h2>
+                <p>Explore our latest articles and stay updated.</p>
+            </div>
+        </div>
 
-        <select id="categoryFilter"
-            style="width: 100%; padding: 12px; margin-bottom: 15px;">
-            <option value="All">All Categories</option>
-            <option value="Technology">Technology</option>
-            <option value="Education">Education</option>
-            <option value="Programming">Programming</option>
-            <option value="Cyber Security">Cyber Security</option>
-            <option value="Lifestyle">Lifestyle</option>
-            <option value="Travel">Travel</option>
-            <option value="Health">Health</option>
-            <option value="General">General</option>
-        </select>
+        <div class="blog-filters">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="🔍 Search blogs by title or content..."
+            >
+
+            <select id="categoryFilter">
+                <option value="All">All Categories</option>
+                <option value="Technology">Technology</option>
+                <option value="Education">Education</option>
+                <option value="Programming">Programming</option>
+                <option value="Cyber Security">Cyber Security</option>
+                <option value="Lifestyle">Lifestyle</option>
+                <option value="Travel">Travel</option>
+                <option value="Health">Health</option>
+                <option value="General">General</option>
+            </select>
+        </div>
 
         <div class="blog-container" id="blog-container">
             <p>Loading blogs...</p>
         </div>
+
     </section>
 
-    <footer>
-        <p>© 2026 MyBlog. All Rights Reserved.</p>
+    <footer class="main-footer">
+        <p>💜 © 2026 MyBlog. All Rights Reserved.</p>
+        <p>Read • Write • Grow</p>
     </footer>
 
     <script>
@@ -92,21 +114,23 @@
                 const card = document.createElement('div');
                 card.className = 'blog-card';
 
+                const category = document.createElement('span');
+                category.className = 'blog-category';
+                category.textContent = blog.category || 'General';
+
                 const title = document.createElement('h3');
                 title.textContent = blog.title;
-
-                const category = document.createElement('p');
-                category.textContent = 'Category: ' + (blog.category || 'General');
 
                 const content = document.createElement('p');
                 content.textContent = blog.content;
 
                 const link = document.createElement('a');
                 link.href = `blog-details.html?id=${blog.id}`;
-                link.textContent = 'Read More';
+                link.className = 'read-more';
+                link.textContent = 'Read More →';
 
-                card.appendChild(title);
                 card.appendChild(category);
+                card.appendChild(title);
                 card.appendChild(content);
                 card.appendChild(link);
 
@@ -123,8 +147,8 @@
 
             const filteredBlogs = allBlogs.filter(blog => {
                 const matchesSearch =
-                    blog.title.toLowerCase().includes(searchText) ||
-                    blog.content.toLowerCase().includes(searchText);
+                    (blog.title || '').toLowerCase().includes(searchText) ||
+                    (blog.content || '').toLowerCase().includes(searchText);
 
                 const matchesCategory =
                     selectedCategory === 'All' ||
