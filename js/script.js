@@ -1,5 +1,7 @@
 
+
 const API_URL = "http://localhost:3000/api";
+
 
 // GET USER ID FROM LOGIN TOKEN
 function getUserId(token) {
@@ -7,6 +9,15 @@ function getUserId(token) {
         return JSON.parse(atob(token.split(".")[1])).sub;
     } catch (error) {
         return null;
+    }
+}
+
+// GET USER EMAIL FROM LOGIN TOKEN
+function getUserEmail(token) {
+    try {
+        return JSON.parse(atob(token.split(".")[1])).email || "Not available";
+    } catch (error) {
+        return "Not available";
     }
 }
 
@@ -126,10 +137,32 @@ if (blogForm) {
     });
 }
 
+// LOAD USER PROFILE
+function loadUserProfile() {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    const userEmail = document.getElementById("userEmail");
+    const userId = document.getElementById("userId");
+
+    if (userEmail) {
+        userEmail.textContent = getUserEmail(token);
+    }
+
+    if (userId) {
+        userId.textContent = getUserId(token) || "Not available";
+    }
+}
+
 // LOAD MY BLOGS FUNCTION
 const blogContainer = document.getElementById("blogContainer");
 
 if (blogContainer) {
+    loadUserProfile();
     loadMyBlogs();
 }
 
@@ -286,4 +319,140 @@ if (logoutBtn) {
         alert("Logged out successfully!");
         window.location.href = "login.html";
     });
+}
+
+// PROFILE PAGE FUNCTIONALITY
+const profileForm = document.getElementById("profileForm");
+
+if (profileForm) {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+        window.location.href = "login.html";
+    } else {
+        const profileImage = document.getElementById("profileImage");
+        const photoInput = document.getElementById("photoInput");
+        const uploadPhotoBtn = document.getElementById("uploadPhotoBtn");
+        const editName = document.getElementById("editName");
+
+        // LOAD PROFILE FROM SUPABASE
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_URL}/profile`, {
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                });
+
+                const user = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(user.error || "Unable to load profile");
+                }
+
+                document.getElementById("profileName").textContent =
+                    user.name || "Not added";
+
+                document.getElementById("profileEmail").textContent =
+                    user.email || "Not available";
+
+                document.getElementById("profileUserId").textContent =
+                    user.id || "Not available";
+
+                editName.value = user.name || "";
+
+                if (user.photoUrl) {
+                    profileImage.src = user.photoUrl;
+                }
+
+            } catch (error) {
+                console.log(error);
+                alert("Unable to load profile!");
+            }
+        }
+
+        // SAVE PROFILE NAME
+        profileForm.addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const name = editName.value.trim();
+
+            if (!name) {
+                alert("Please enter your name!");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/profile`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify({ name })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || "Profile update failed");
+                }
+
+                document.getElementById("profileName").textContent = name;
+                alert("Profile Updated Successfully!");
+
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        // UPLOAD PROFILE PHOTO
+        uploadPhotoBtn.addEventListener("click", async function() {
+            const file = photoInput.files[0];
+
+            if (!file) {
+                alert("Please select a photo!");
+                return;
+            }
+
+            if (!file.type.startsWith("image/")) {
+                alert("Please select an image!");
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert("Photo size must be below 2 MB!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("photo", file);
+
+            try {
+                const response = await fetch(`${API_URL}/profile/photo`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || "Photo upload failed");
+                }
+
+                profileImage.src = result.photoUrl + "?t=" + Date.now();
+                photoInput.value = "";
+
+                alert("Profile Photo Uploaded Successfully!");
+
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        loadProfile();
+    }
 }
