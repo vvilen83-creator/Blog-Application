@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,40 +6,72 @@
     <title>Dashboard - MyBlog</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="dashboard-page">
 
-    <header>
-        <h2>MyBlog Dashboard</h2>
+    <header class="dashboard-header">
+        <h2>MyBlog</h2>
 
         <nav>
             <a href="index.html">Home</a>
             <a href="create-blog.html">Create Blog</a>
             <a href="profile.html">Profile</a>
-            <a href="#" id="logoutBtn">Logout</a>
+            <a href="#" id="logoutBtn" class="logout-link">Logout</a>
         </nav>
     </header>
 
-    <section class="dashboard">
-        <h1>Welcome to Dashboard!</h1>
-        <p>Manage your blog posts here.</p>
+    <main class="dashboard">
 
-        <div class="profile-section">
-            <h2>My Profile</h2>
-            <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
-            <p><strong>User ID:</strong> <span id="userId">Loading...</span></p>
-            <a href="profile.html">View Full Profile</a>
-        </div>
+        <section class="dashboard-welcome">
+            <div>
+                <span class="dashboard-tag">MY WORKSPACE</span>
+                <h1>Welcome to Dashboard!</h1>
+                <p>Manage your stories, create new blogs and share your ideas.</p>
+            </div>
 
-        <a href="create-blog.html" class="btn">
-            + Create New Blog
-        </a>
+            <a href="create-blog.html" class="dashboard-create-btn">
+                + Create New Blog
+            </a>
+        </section>
 
-        <h2>My Blog Posts</h2>
+        <section class="profile-section">
+            <div class="section-heading">
+                <div>
+                    <span class="dashboard-tag">ACCOUNT DETAILS</span>
+                    <h2>My Profile</h2>
+                </div>
+                <a href="profile.html" class="profile-view-btn">
+                    View Profile →
+                </a>
+            </div>
 
-        <div class="blog-container" id="blogContainer">
-            <p id="loadingMessage">Loading your blogs...</p>
-        </div>
-    </section>
+            <div class="profile-info">
+                <div class="info-item">
+                    <span>Email Address</span>
+                    <p id="userEmail">Loading...</p>
+                </div>
+
+                <div class="info-item">
+                    <span>User ID</span>
+                    <p id="userId">Loading...</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-blogs-section">
+            <div class="section-heading">
+                <div>
+                    <span class="dashboard-tag">YOUR CONTENT</span>
+                    <h2>My Blog Posts</h2>
+                    <p>All your published stories in one place.</p>
+                </div>
+            </div>
+
+            <div class="blog-container" id="blogContainer">
+                <p id="loadingMessage">Loading your blogs...</p>
+            </div>
+        </section>
+
+    </main>
 
     <script src="js/script.js"></script>
 </body>
