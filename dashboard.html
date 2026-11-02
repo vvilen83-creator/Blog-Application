@@ -15,7 +15,8 @@
         <nav>
             <a href="index.html">Home</a>
             <a href="create-blog.html">Create Blog</a>
-            <a href="login.html">Logout</a>
+            <a href="profile.html">Profile</a>
+            <a href="#" id="logoutBtn">Logout</a>
         </nav>
     </header>
 
@@ -23,28 +24,21 @@
         <h1>Welcome to Dashboard!</h1>
         <p>Manage your blog posts here.</p>
 
+        <div class="profile-section">
+            <h2>My Profile</h2>
+            <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+            <p><strong>User ID:</strong> <span id="userId">Loading...</span></p>
+            <a href="profile.html">View Full Profile</a>
+        </div>
+
         <a href="create-blog.html" class="btn">
             + Create New Blog
         </a>
 
         <h2>My Blog Posts</h2>
 
-        <div class="blog-container">
-
-            <div class="blog-card">
-                <h3>My First Blog</h3>
-                <p>This is my first blog post.</p>
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-
-            <div class="blog-card">
-                <h3>Technology Blog</h3>
-                <p>Technology is changing our world.</p>
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-
+        <div class="blog-container" id="blogContainer">
+            <p id="loadingMessage">Loading your blogs...</p>
         </div>
     </section>
 
