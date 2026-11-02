@@ -27,6 +27,26 @@
     <section class="blogs">
         <h2>Latest Blogs</h2>
 
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search blogs by title or content..."
+            style="width: 100%; padding: 12px; margin: 15px 0; box-sizing: border-box;"
+        >
+
+        <select id="categoryFilter"
+            style="width: 100%; padding: 12px; margin-bottom: 15px;">
+            <option value="All">All Categories</option>
+            <option value="Technology">Technology</option>
+            <option value="Education">Education</option>
+            <option value="Programming">Programming</option>
+            <option value="Cyber Security">Cyber Security</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Travel">Travel</option>
+            <option value="Health">Health</option>
+            <option value="General">General</option>
+        </select>
+
         <div class="blog-container" id="blog-container">
             <p>Loading blogs...</p>
         </div>
@@ -37,6 +57,8 @@
     </footer>
 
     <script>
+        let allBlogs = [];
+
         async function loadBlogs() {
             const container = document.getElementById('blog-container');
 
@@ -47,42 +69,78 @@
                     throw new Error('Unable to load blogs');
                 }
 
-                const blogs = await response.json();
-
-                container.innerHTML = '';
-
-                if (blogs.length === 0) {
-                    container.innerHTML = '<p>No blogs available.</p>';
-                    return;
-                }
-
-                blogs.forEach(blog => {
-                    const card = document.createElement('div');
-                    card.className = 'blog-card';
-
-                    const title = document.createElement('h3');
-                    title.textContent = blog.title;
-
-                    const content = document.createElement('p');
-                    content.textContent = blog.content;
-
-                    const link = document.createElement('a');
-                    link.href = `blog-details.html?id=${blog.id}`;
-                    link.textContent = 'Read More';
-
-                    card.appendChild(title);
-                    card.appendChild(content);
-                    card.appendChild(link);
-
-                    container.appendChild(card);
-                });
+                allBlogs = await response.json();
+                filterBlogs();
 
             } catch (error) {
-                container.innerHTML =
-                    '<p>Unable to load blogs. Please check the backend server.</p>';
+                container.textContent =
+                    'Unable to load blogs. Please check the backend server.';
                 console.error(error);
             }
         }
+
+        function displayBlogs(blogs) {
+            const container = document.getElementById('blog-container');
+            container.innerHTML = '';
+
+            if (blogs.length === 0) {
+                container.textContent = 'No blogs found.';
+                return;
+            }
+
+            blogs.forEach(blog => {
+                const card = document.createElement('div');
+                card.className = 'blog-card';
+
+                const title = document.createElement('h3');
+                title.textContent = blog.title;
+
+                const category = document.createElement('p');
+                category.textContent = 'Category: ' + (blog.category || 'General');
+
+                const content = document.createElement('p');
+                content.textContent = blog.content;
+
+                const link = document.createElement('a');
+                link.href = `blog-details.html?id=${blog.id}`;
+                link.textContent = 'Read More';
+
+                card.appendChild(title);
+                card.appendChild(category);
+                card.appendChild(content);
+                card.appendChild(link);
+
+                container.appendChild(card);
+            });
+        }
+
+        function filterBlogs() {
+            const searchText = document.getElementById('searchInput')
+                .value.toLowerCase().trim();
+
+            const selectedCategory = document.getElementById('categoryFilter')
+                .value;
+
+            const filteredBlogs = allBlogs.filter(blog => {
+                const matchesSearch =
+                    blog.title.toLowerCase().includes(searchText) ||
+                    blog.content.toLowerCase().includes(searchText);
+
+                const matchesCategory =
+                    selectedCategory === 'All' ||
+                    (blog.category || 'General') === selectedCategory;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            displayBlogs(filteredBlogs);
+        }
+
+        document.getElementById('searchInput')
+            .addEventListener('input', filterBlogs);
+
+        document.getElementById('categoryFilter')
+            .addEventListener('change', filterBlogs);
 
         loadBlogs();
     </script>
