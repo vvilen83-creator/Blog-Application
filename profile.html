@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - MyBlog</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <h2>MyBlog</h2>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <section class="dashboard">
+        <h1>My Profile</h1>
+
+        <div class="profile-section">
+
+            <div>
+                <img
+                    id="profileImage"
+                    src="https://placehold.co/150x150?text=Profile"
+                    alt="Profile Photo"
+                    width="150"
+                    height="150"
+                    style="border-radius: 50%; object-fit: cover;"
+                >
+            </div>
+
+            <br>
+
+            <label for="photoInput">Choose Profile Photo</label>
+            <input type="file" id="photoInput" accept="image/*">
+
+            <button type="button" id="uploadPhotoBtn">
+                Upload Photo
+            </button>
+
+            <hr>
+
+            <h2>Account Information</h2>
+
+            <p><strong>Name:</strong> <span id="profileName">Loading...</span></p>
+            <p><strong>Email:</strong> <span id="profileEmail">Loading...</span></p>
+            <p><strong>User ID:</strong> <span id="profileUserId">Loading...</span></p>
+
+            <hr>
+
+            <h2>Edit Profile</h2>
+
+            <form id="profileForm">
+                <label for="editName">Your Name</label>
+                <input type="text" id="editName" placeholder="Enter your name" required>
+
+                <button type="submit">Save Profile</button>
+            </form>
+
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
