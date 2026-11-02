@@ -1,5 +1,3 @@
-alert("JavaScript Connected Successfully!");
-
 // REGISTER FUNCTION
 const registerForm = document.getElementById("registerForm");
 
@@ -36,6 +34,7 @@ if (registerForm) {
     });
 }
 
+
 // LOGIN FUNCTION
 const loginForm = document.getElementById("loginForm");
 
@@ -59,8 +58,14 @@ if (loginForm) {
 
             if (response.ok) {
                 localStorage.setItem("loggedIn", "true");
+                localStorage.setItem(
+                    "accessToken",
+                    result.session.access_token
+                );
+
                 alert("Login Successful!");
                 window.location.href = "dashboard.html";
+
             } else {
                 alert(result.message);
             }
@@ -72,6 +77,7 @@ if (loginForm) {
     });
 }
 
+
 // CREATE BLOG FUNCTION
 const blogForm = document.getElementById("blogForm");
 
@@ -82,16 +88,24 @@ if (blogForm) {
         const title = document.getElementById("blogTitle").value;
         const content = document.getElementById("blogContent").value;
 
+        const token = localStorage.getItem("accessToken");
+
+        if (!token) {
+            alert("Please login first!");
+            window.location.href = "login.html";
+            return;
+        }
+
         try {
             const response = await fetch("http://localhost:3000/api/blogs", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
                 },
                 body: JSON.stringify({
                     title: title,
-                    content: content,
-                    author: "Biraja"
+                    content: content
                 })
             });
 
