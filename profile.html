@@ -7,63 +7,102 @@
     <title>My Profile - MyBlog</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="profile-page">
 
-    <header>
+    <header class="dashboard-header">
         <h2>MyBlog</h2>
         <nav>
             <a href="index.html">Home</a>
             <a href="dashboard.html">Dashboard</a>
-            <a href="#" id="logoutBtn">Logout</a>
+            <a href="#" id="logoutBtn" class="logout-link">Logout</a>
         </nav>
     </header>
 
-    <section class="dashboard">
-        <h1>My Profile</h1>
+    <main class="profile-container">
 
-        <div class="profile-section">
+        <div class="profile-card">
 
-            <div>
+            <div class="profile-title">
+                <span class="dashboard-tag">YOUR ACCOUNT</span>
+                <h1>My Profile</h1>
+                <p>Manage your personal information and profile photo.</p>
+            </div>
+
+            <div class="profile-photo-area">
                 <img
                     id="profileImage"
                     src="https://placehold.co/150x150?text=Profile"
                     alt="Profile Photo"
-                    width="150"
-                    height="150"
-                    style="border-radius: 50%; object-fit: cover;"
+                    class="profile-avatar"
                 >
+
+                <h2 id="profileDisplayName">My Profile</h2>
+                <p class="profile-photo-label">Your MyBlog Account</p>
+
+                <label for="photoInput" class="photo-select-btn">
+                    Choose Photo
+                </label>
+
+                <input
+                    type="file"
+                    id="photoInput"
+                    accept="image/*"
+                    class="photo-file-input"
+                >
+
+                <button type="button" id="uploadPhotoBtn" class="upload-photo-btn">
+                    Upload Photo ↑
+                </button>
             </div>
 
-            <br>
+            <div class="profile-divider"></div>
 
-            <label for="photoInput">Choose Profile Photo</label>
-            <input type="file" id="photoInput" accept="image/*">
+            <section class="account-details">
+                <span class="dashboard-tag">PERSONAL DETAILS</span>
+                <h2>Account Information</h2>
 
-            <button type="button" id="uploadPhotoBtn">
-                Upload Photo
-            </button>
+                <div class="account-info-item">
+                    <span>Name</span>
+                    <p id="profileName">Loading...</p>
+                </div>
 
-            <hr>
+                <div class="account-info-item">
+                    <span>Email Address</span>
+                    <p id="profileEmail">Loading...</p>
+                </div>
 
-            <h2>Account Information</h2>
+                <div class="account-info-item">
+                    <span>User ID</span>
+                    <p id="profileUserId">Loading...</p>
+                </div>
+            </section>
 
-            <p><strong>Name:</strong> <span id="profileName">Loading...</span></p>
-            <p><strong>Email:</strong> <span id="profileEmail">Loading...</span></p>
-            <p><strong>User ID:</strong> <span id="profileUserId">Loading...</span></p>
+            <div class="profile-divider"></div>
 
-            <hr>
+            <section class="edit-profile-section">
+                <span class="dashboard-tag">UPDATE DETAILS</span>
+                <h2>Edit Profile</h2>
+                <p>Update your display name below.</p>
 
-            <h2>Edit Profile</h2>
+                <form id="profileForm">
+                    <label for="editName">Your Name</label>
 
-            <form id="profileForm">
-                <label for="editName">Your Name</label>
-                <input type="text" id="editName" placeholder="Enter your name" required>
+                    <input
+                        type="text"
+                        id="editName"
+                        placeholder="Enter your name"
+                        required
+                    >
 
-                <button type="submit">Save Profile</button>
-            </form>
+                    <button type="submit" class="save-profile-btn">
+                        Save Profile ✨
+                    </button>
+                </form>
+            </section>
 
         </div>
-    </section>
+
+    </main>
 
     <script src="js/script.js"></script>
 
