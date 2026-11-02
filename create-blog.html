@@ -7,9 +7,9 @@
     <title>Create Blog - MyBlog</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="create-blog-page">
 
-    <header>
+    <header class="auth-header">
         <h2>MyBlog</h2>
         <nav>
             <a href="index.html">Home</a>
@@ -17,15 +17,30 @@
         </nav>
     </header>
 
-    <section class="auth-container">
-        <div class="auth-box">
-            <h2>Create New Blog</h2>
-            <p>Share your thoughts with the world!</p>
+    <main class="create-blog-container">
+        <div class="create-blog-box">
+
+            <div class="create-blog-icon">✍️</div>
+
+            <span class="create-blog-tag">SHARE YOUR IDEAS</span>
+
+            <h1>Create New Blog</h1>
+
+            <p class="create-blog-subtitle">
+                Your thoughts deserve to be shared with the world!
+            </p>
 
             <form id="blogForm">
-                <input type="text" id="blogTitle"
-                    placeholder="Blog Title" required>
 
+                <label for="blogTitle">Blog Title</label>
+                <input
+                    type="text"
+                    id="blogTitle"
+                    placeholder="Enter your blog title..."
+                    required
+                >
+
+                <label for="blogCategory">Choose Category</label>
                 <select id="blogCategory" required>
                     <option value="">Select Blog Category</option>
                     <option value="Technology">Technology</option>
@@ -38,14 +53,26 @@
                     <option value="General">General</option>
                 </select>
 
-                <textarea id="blogContent"
-                    placeholder="Write your blog here..."
-                    rows="8" required></textarea>
+                <label for="blogContent">Blog Content</label>
+                <textarea
+                    id="blogContent"
+                    placeholder="Start writing your thoughts here..."
+                    rows="8"
+                    required
+                ></textarea>
 
-                <button type="submit">Publish Blog</button>
+                <button type="submit" class="publish-blog-btn">
+                    Publish Blog ✨
+                </button>
+
             </form>
+
+            <p class="create-blog-note">
+                ✦ Every great story starts with an idea.
+            </p>
+
         </div>
-    </section>
+    </main>
 
     <script src="js/script.js"></script>
 </body>
