@@ -11,7 +11,6 @@
 
     <header>
         <h2>MyBlog</h2>
-
         <nav>
             <a href="index.html">Home</a>
             <a href="login.html">Login</a>
@@ -28,32 +27,65 @@
     <section class="blogs">
         <h2>Latest Blogs</h2>
 
-        <div class="blog-container">
-
-            <div class="blog-card">
-                <h3>Introduction to Web Development</h3>
-                <p>Learn the basics of HTML, CSS and JavaScript.</p>
-                <a href="#">Read More</a>
-            </div>
-
-            <div class="blog-card">
-                <h3>Importance of Technology</h3>
-                <p>Technology makes our daily life easier.</p>
-                <a href="#">Read More</a>
-            </div>
-
-            <div class="blog-card">
-                <h3>Learning New Skills</h3>
-                <p>Improve your knowledge by learning every day.</p>
-                <a href="#">Read More</a>
-            </div>
-
+        <div class="blog-container" id="blog-container">
+            <p>Loading blogs...</p>
         </div>
     </section>
 
     <footer>
         <p>© 2026 MyBlog. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        async function loadBlogs() {
+            const container = document.getElementById('blog-container');
+
+            try {
+                const response = await fetch('http://localhost:3000/api/blogs');
+
+                if (!response.ok) {
+                    throw new Error('Unable to load blogs');
+                }
+
+                const blogs = await response.json();
+
+                container.innerHTML = '';
+
+                if (blogs.length === 0) {
+                    container.innerHTML = '<p>No blogs available.</p>';
+                    return;
+                }
+
+                blogs.forEach(blog => {
+                    const card = document.createElement('div');
+                    card.className = 'blog-card';
+
+                    const title = document.createElement('h3');
+                    title.textContent = blog.title;
+
+                    const content = document.createElement('p');
+                    content.textContent = blog.content;
+
+                    const link = document.createElement('a');
+                    link.href = `blog-details.html?id=${blog.id}`;
+                    link.textContent = 'Read More';
+
+                    card.appendChild(title);
+                    card.appendChild(content);
+                    card.appendChild(link);
+
+                    container.appendChild(card);
+                });
+
+            } catch (error) {
+                container.innerHTML =
+                    '<p>Unable to load blogs. Please check the backend server.</p>';
+                console.error(error);
+            }
+        }
+
+        loadBlogs();
+    </script>
 
     <script src="js/script.js"></script>
 </body>
