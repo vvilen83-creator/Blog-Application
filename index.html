@@ -81,11 +81,14 @@
     <script>
         let allBlogs = [];
 
+        const BLOGS_API_URL =
+            'https://blog-application-backend.onrender.com/api/blogs';
+
         async function loadBlogs() {
             const container = document.getElementById('blog-container');
 
             try {
-                const response = await fetch('https://blog-application-backend.onrender.com');
+                const response = await fetch(BLOGS_API_URL);
 
                 if (!response.ok) {
                     throw new Error('Unable to load blogs');
@@ -96,7 +99,7 @@
 
             } catch (error) {
                 container.textContent =
-                    'Unable to load blogs. Please check the backend server.';
+                    'Unable to load blogs. Please try again later.';
                 console.error(error);
             }
         }
@@ -169,6 +172,8 @@
         loadBlogs();
     </script>
 
+    <!-- Load the main JavaScript file only once -->
     <script src="js/script.js"></script>
+
 </body>
 </html>
