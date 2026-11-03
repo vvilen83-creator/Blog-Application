@@ -1,4 +1,4 @@
-const API_URL = "https://blog-application-backend.onrender.com/api";
+const API_URL = "https://blog-application-z4i4.onrender.com/api";
 
 function getUserId(token) {
     try {
