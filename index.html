@@ -82,7 +82,7 @@
         let allBlogs = [];
 
         const BLOGS_API_URL =
-            'https://blog-application-backend.onrender.com/api/blogs';
+            'https://blog-application-z4i4.onrender.com/api/blogs';
 
         async function loadBlogs() {
             const container = document.getElementById('blog-container');
@@ -100,7 +100,7 @@
             } catch (error) {
                 container.textContent =
                     'Unable to load blogs. Please try again later.';
-                console.error(error);
+                console.error('Blog loading error:', error);
             }
         }
 
@@ -172,7 +172,7 @@
         loadBlogs();
     </script>
 
-    <!-- Load the main JavaScript file only once -->
+    <!-- Main JavaScript file loaded only once -->
     <script src="js/script.js"></script>
 
 </body>
